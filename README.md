@@ -2,6 +2,8 @@
 
 ```cli
 kubectl run -it --rm --image=quay.io/coreos/etcd:latest --restart=Never etcdctl -- sh
+
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 member list
 ```
 
 ```bootstrap
