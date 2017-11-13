@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   labels:
     app: vulcand
-  name: vulcand
+  name: agent2
 spec:
   containers:
   - command:
