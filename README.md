@@ -1,5 +1,9 @@
 # Usage
 
+```cli
+kubectl run -it --rm --image=quay.io/coreos/etcd:latest --restart=Never etcdctl -- sh
+```
+
 ```bootstrap
 kubectl create -f etcd.yml
 kubectl get po --show-all
