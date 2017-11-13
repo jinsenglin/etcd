@@ -3,7 +3,14 @@
 ```cli
 kubectl run -it --rm --image=quay.io/coreos/etcd:latest --restart=Never etcdctl -- sh
 
+# export ETCDCTL_API=3
 # etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 member list
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 put foo bar
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 get foo
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 put /node/foo foo
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 put /node/bar bar
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 get --prefix /node
+# etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 get --print-value-only --prefix /node
 ```
 
 ```bootstrap
