@@ -48,6 +48,7 @@ export NODE1=127.0.0.1
 REGISTRY=quay.io/coreos/etcd
 
 docker run \
+  --rm -d \
   -p 2379:2379 \
   -p 2380:2380 \
   --name etcd ${REGISTRY}:v3.0.17 \
