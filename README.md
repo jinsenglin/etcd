@@ -28,7 +28,8 @@ kubectl get po --show-all
 ```
 
 ```bootstrap2
-export HostIP="127.0.0.1"
+export HostIP=127.0.0.1
+
 docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 \
  --name etcd quay.io/coreos/etcd:v2.3.8 \
  -name etcd0 \
@@ -42,6 +43,23 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
 ```
 
 ```bootstrap3
+export NODE1=127.0.0.1
+
+REGISTRY=quay.io/coreos/etcd
+
+docker run \
+  -p 2379:2379 \
+  -p 2380:2380 \
+  --volume=${DATA_DIR}:/etcd-data \
+  --name etcd ${REGISTRY}:v3.0.17 \
+  /usr/local/bin/etcd \
+  --data-dir=/etcd-data --name node1 \
+  --initial-advertise-peer-urls http://${NODE1}:2380 --listen-peer-urls http://0.0.0.0:2380 \
+  --advertise-client-urls http://${NODE1}:2379 --listen-client-urls http://0.0.0.0:2379 \
+  --initial-cluster node1=http://${NODE1}:2380
+```
+
+```bootstrap4
 ./etcd
 ```
 
@@ -76,3 +94,4 @@ kubectl delete svc etcd2
 * https://github.com/coreos/etcd/blob/master/hack/kubernetes-deploy/vulcand.yml
 * https://coreos.com/etcd/docs/latest/v2/docker_guide.html
 * https://coreos.com/etcd/docs/latest/dev-guide/local_cluster.html
+* https://github.com/coreos/etcd/blob/master/Documentation/op-guide/container.md
