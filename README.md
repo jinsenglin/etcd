@@ -50,7 +50,6 @@ REGISTRY=quay.io/coreos/etcd
 docker run \
   -p 2379:2379 \
   -p 2380:2380 \
-  --volume=${DATA_DIR}:/etcd-data \
   --name etcd ${REGISTRY}:v3.0.17 \
   /usr/local/bin/etcd \
   --data-dir=/etcd-data --name node1 \
