@@ -13,7 +13,7 @@ kubectl run -it --rm --image=quay.io/coreos/etcd:latest --restart=Never etcdctl 
 # etcdctl --endpoints=http://$ETCD_CLIENT_PORT_2379_TCP_ADDR:2379 get --print-value-only --prefix /node
 ```
 
-```bootstrap
+```bootstrap1
 kubectl create -f etcd.yml
 kubectl get po --show-all
 
@@ -25,6 +25,24 @@ kubectl get po --show-all
 
 kubectl create -f agent2.yml
 kubectl get po --show-all
+```
+
+```bootstrap2
+export HostIP="127.0.0.1"
+docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 \
+ --name etcd quay.io/coreos/etcd:v2.3.8 \
+ -name etcd0 \
+ -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 \
+ -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
+ -initial-advertise-peer-urls http://${HostIP}:2380 \
+ -listen-peer-urls http://0.0.0.0:2380 \
+ -initial-cluster-token etcd-cluster-1 \
+ -initial-cluster etcd0=http://${HostIP}:2380 \
+ -initial-cluster-state new
+```
+
+```bootstrap3
+./etcd
 ```
 
 ```cleanup
@@ -57,3 +75,4 @@ kubectl delete svc etcd2
 * https://github.com/coreos/etcd/blob/master/hack/kubernetes-deploy/etcd.yml
 * https://github.com/coreos/etcd/blob/master/hack/kubernetes-deploy/vulcand.yml
 * https://coreos.com/etcd/docs/latest/v2/docker_guide.html
+* https://coreos.com/etcd/docs/latest/dev-guide/local_cluster.html
